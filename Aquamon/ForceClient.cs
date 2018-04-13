@@ -45,5 +45,21 @@ namespace Aquamon
                 Console.WriteLine("Logged in :: " + ServiceUrl);
             }
         }
+
+        public HttpResponseMessage Post(string endpoint, string payload)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                var request = new HttpRequestMessage(HttpMethod.Post, new Uri(ServiceUrl + endpoint));
+
+                request.Headers.Add("Authorization", "Bearer " + AuthToken);
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                request.Headers.Add("X-PrettyPrint", "1");
+                
+                request.Content = new StringContent(payload, Encoding.UTF8, "application/json");
+
+                return client.SendAsync(request).Result;
+            }
+        }
     }
 }
