@@ -10,7 +10,8 @@ namespace Aquamon
             client.login();
 
             SandboxManager sbxManager = new SandboxManager(client);
-            sbxManager.createSandbox("apitest1", "Sandbox for development.");
+            var result = sbxManager.GetSandboxStatus("apitest1");
+            Console.WriteLine($":: Sandbox Status :: {result}");
 
             Console.ReadLine();
             Console.ReadKey();

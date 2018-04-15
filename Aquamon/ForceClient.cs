@@ -48,9 +48,23 @@ namespace Aquamon
 
         public HttpResponseMessage Post(string endpoint, string payload)
         {
+            return Callout(HttpMethod.Post, endpoint, payload);
+        }
+
+        public HttpResponseMessage Get(string endpoint)
+        {
+            return Callout(HttpMethod.Get, endpoint, "{}");
+        }
+
+        public HttpResponseMessage Patch(string endpoint, string payload)
+        {
+            return Callout(new HttpMethod("PATCH"), endpoint, payload);
+        }
+        private HttpResponseMessage Callout(HttpMethod method, string endpoint, string payload)
+        {
             using (HttpClient client = new HttpClient())
             {
-                var request = new HttpRequestMessage(HttpMethod.Post, new Uri(ServiceUrl + endpoint));
+                var request = new HttpRequestMessage(method, new Uri(ServiceUrl + endpoint));
 
                 request.Headers.Add("Authorization", "Bearer " + AuthToken);
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
