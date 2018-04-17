@@ -60,7 +60,7 @@ namespace Aquamon
             Console.WriteLine("\n:: Refreshed Sandbox :: " + stringResponse);
         }
 
-        public string GetSandboxStatus(string name)
+        public string GetSandboxStatus(string name, string status)
         {
             var response = Client.Get(QUERY_SANDBOX_PROCESS.Replace("{name}", name));
             var stringResponse = response.Content.ReadAsStringAsync().Result;
@@ -68,7 +68,7 @@ namespace Aquamon
             dynamic stuff = JObject.Parse(stringResponse);
             foreach(var record in stuff.records)
             {
-                if(record.Status == "Processing")
+                if(record.Status == status)
                 {
                     return Client.Get("" + record.attributes.url).Content.ReadAsStringAsync().Result;
                 }

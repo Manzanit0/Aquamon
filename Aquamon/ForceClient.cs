@@ -42,7 +42,7 @@ namespace Aquamon
                 AuthToken = (string)obj["access_token"];
                 ServiceUrl = (string)obj["instance_url"];
 
-                Console.WriteLine("Logged in :: " + ServiceUrl);
+                Console.WriteLine(":: Logged in :: " + ServiceUrl);
             }
         }
 

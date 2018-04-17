@@ -1,20 +1,66 @@
 ﻿using System;
+using Microsoft.Extensions.CommandLineUtils;
 
 namespace Aquamon
 {
     class Program
     {
+        private static ForceClient _client { get; set; }
+        private static SandboxManager _sbxManager { get; set; }
         static void Main(string[] args)
         {
-            ForceClient client = new ForceClient();
-            client.login();
+            var app = new CommandLineApplication();
+            app.Name = "aquamon";
+            app.HelpOption("-?|-h|--help");
 
-            SandboxManager sbxManager = new SandboxManager(client);
-            var result = sbxManager.GetSandboxStatus("apitest1");
-            Console.WriteLine($":: Sandbox Status :: {result}");
+            _client = new ForceClient();
+            _client.login();
 
-            Console.ReadLine();
-            Console.ReadKey();
+            _sbxManager = new SandboxManager(_client);
+
+            app.OnExecute(() =>
+            {
+                Console.WriteLine("\n:: Hello World! ::");
+                return 0;
+            });
+
+            app.Command("create-sbx", (command) =>
+            {
+                command.Description = "Creates a sandbox.";
+                command.HelpOption("-?|-h|--help");
+
+                var nameArgument = command.Argument("[name]", "The name of the sandbox");
+
+                command.OnExecute(() =>
+                {
+                    var name = nameArgument.Value != null ? nameArgument.Value : "ApiSbx";
+                    Console.WriteLine($"\n:: Sandbox {name} being created ::");
+
+                    _sbxManager.CreateSandbox(name, "Description");
+
+                    return 0;
+                });
+            });
+
+            app.Command("refresh-sbx", (command) =>
+            {
+                command.Description = "Refreshes a sandbox.";
+                command.HelpOption("-?|-h|--help");
+
+                var nameArgument = command.Argument("[name]", "The name of the sandbox");
+
+                command.OnExecute(() =>
+                {
+                    var name = nameArgument.Value != null ? nameArgument.Value : "ApiSbx";
+                    Console.WriteLine($"\n:: Sandbox {name} being refreshed ::");
+
+                    _sbxManager.RefreshSandbox(name);
+
+                    return 0;
+                });
+            });
+
+            app.Execute(args);
         }
     }
 }
