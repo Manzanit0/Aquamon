@@ -74,7 +74,7 @@ namespace Aquamon
                 }
             }
 
-            return @"{""Message"": ""There is sandbox In Progress with the given name""}";
+            return $@"{{""Message"": ""A sandbox with the name {name} and status {status} does not exist.""}}";
         }
     }
 }
