@@ -17,17 +17,7 @@ namespace Aquamon
 
         public void login()
         {
-            // Get actual path from the assembly, in case we add the app to Enviroment Variables.
-            var exePath =   Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
-            Regex appPathMatcher = new Regex(@"(?<!fil)[A-Za-z]:\\+[\S\s]*");
-            var appRoot = appPathMatcher.Match(exePath).Value;
-
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(appRoot)
-                .AddJsonFile("appsettings.json")
-                .AddEnvironmentVariables();
-
-            var Configuration = builder.Build();
+            var Configuration = ConfigManager.GetConfiguration();
 
             HttpContent content = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
@@ -49,7 +39,7 @@ namespace Aquamon
                 AuthToken = (string)obj["access_token"];
                 ServiceUrl = (string)obj["instance_url"];
 
-                Console.WriteLine(":: Logged in :: " + ServiceUrl);
+                Console.WriteLine($"\n:: Logged in {ServiceUrl} ::");
             }
         }
 

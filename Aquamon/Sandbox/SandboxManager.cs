@@ -15,6 +15,7 @@ namespace Aquamon
         public const string SANDBOX_PROCESS_ENDPOINT = "/services/data/v42.0/tooling/sobjects/SandboxProcess/";
         public const string QUERY_SANDBOX_INFO = "/services/data/v42.0/tooling/query?q=SELECT+Id,SandboxName+FROM+SandboxInfo+WHERE+SandboxName+in+('{name}')";
         public const string QUERY_SANDBOX_PROCESS = "/services/data/v42.0/tooling/query?q=SELECT+Id,Status+FROM+SandboxProcess+WHERE+SandboxName+in+('{name}')";
+        
         private ForceClient Client { get; set; }
 
         public SandboxManager(ForceClient client)
@@ -22,59 +23,45 @@ namespace Aquamon
             this.Client = client;
         }
 
-        public void CreateSandbox(string name, string description)
+        public void CreateSandbox(SandboxInfo info)
         {
-            var payload = $@"
-            {{
-                ""AutoActivate"": true,
-                ""SandboxName"": ""{name}"",
-                ""Description"": ""{description}"",
-                ""LicenseType"": ""DEVELOPER""
-            }}";
-
-            var response = Client.Post(SANDBOX_INFO_ENDPOINT, payload);
+            var response = Client.Post(SANDBOX_INFO_ENDPOINT, info.ToJSON());
             var stringResponse = response.Content.ReadAsStringAsync().Result;
 
             Console.WriteLine("\n:: Sandbox created :: " + stringResponse);
         }
 
-        public void RefreshSandbox(string name)
+        public void RefreshSandbox(SandboxInfo info)
         {
-            var response = Client.Get(QUERY_SANDBOX_INFO.Replace("{name}", name));
+            var response = Client.Get(QUERY_SANDBOX_INFO.Replace("{name}", info.SandboxName));
             var stringResponse = response.Content.ReadAsStringAsync().Result;
 
             Console.WriteLine("\n:: Queried Sandbox :: " + stringResponse);
 
-            dynamic stuff = JObject.Parse(stringResponse);
-            string id = stuff.records[0].Id;
+            dynamic queriedSandbox = JObject.Parse(stringResponse);
+            string id = queriedSandbox.records[0].Id;
 
-            var payload = $@"
-            {{
-                ""AutoActivate"": true,
-                ""LicenseType"": ""DEVELOPER""
-            }}";
-
-            response = Client.Patch(SANDBOX_INFO_ENDPOINT + $"{id}/", payload);
+            response = Client.Patch(SANDBOX_INFO_ENDPOINT + $"{id}/", info.ToJSON());
             stringResponse = response.Content.ReadAsStringAsync().Result;
 
             Console.WriteLine("\n:: Refreshed Sandbox :: " + stringResponse);
         }
 
-        public string GetSandboxStatus(string name, string status)
+        public string GetSandboxStatus(SandboxInfo info)
         {
-            var response = Client.Get(QUERY_SANDBOX_PROCESS.Replace("{name}", name));
+            var response = Client.Get(QUERY_SANDBOX_PROCESS.Replace("{name}", info.SandboxName));
             var stringResponse = response.Content.ReadAsStringAsync().Result;
 
-            dynamic stuff = JObject.Parse(stringResponse);
-            foreach(var record in stuff.records)
+            dynamic sandboxes = JObject.Parse(stringResponse);
+            foreach(var record in sandboxes.records)
             {
-                if(record.Status == status)
+                if(record.Status == info.Status)
                 {
                     return Client.Get("" + record.attributes.url).Content.ReadAsStringAsync().Result;
                 }
             }
 
-            return $@"{{""Message"": ""A sandbox with the name {name} and status {status} does not exist.""}}";
+            return $@"{{""Message"": ""A sandbox with the name {info.SandboxName} and status {info.Status} does not exist.""}}";
         }
     }
 }

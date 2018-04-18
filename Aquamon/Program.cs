@@ -36,7 +36,8 @@ namespace Aquamon
                     var name = nameArgument.Value != null ? nameArgument.Value : "ApiSbx";
                     Console.WriteLine($"\n:: Sandbox {name} being created ::");
 
-                    _sbxManager.CreateSandbox(name, "Description");
+                    SandboxInfo sbxInfo = new SandboxInfo() { SandboxName = name, Description = "Description" };
+                    _sbxManager.CreateSandbox(sbxInfo);
 
                     return 0;
                 });
@@ -54,7 +55,8 @@ namespace Aquamon
                     var name = nameArgument.Value != null ? nameArgument.Value : "ApiSbx";
                     Console.WriteLine($"\n:: Sandbox {name} being refreshed ::");
 
-                    _sbxManager.RefreshSandbox(name);
+                    SandboxInfo sbxInfo = new SandboxInfo() { SandboxName = name, Description = "Description"};
+                    _sbxManager.RefreshSandbox(sbxInfo);
 
                     return 0;
                 });
@@ -72,7 +74,9 @@ namespace Aquamon
                 {
                     var status = statusArgument.Value != null ? statusArgument.Value : "Completed";
                     var name = nameArgument.Value != null ? nameArgument.Value : "ApiSbx";
-                    var response = _sbxManager.GetSandboxStatus(name, status);
+
+                    SandboxInfo sbxInfo = new SandboxInfo() { SandboxName = name, Status = status, Description = "Description"};
+                    var response = _sbxManager.GetSandboxStatus(sbxInfo);
 
                     Console.WriteLine($"\n:: Status :: \n {response}");
 
