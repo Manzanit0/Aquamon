@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Aquamon
 {
@@ -16,9 +17,15 @@ namespace Aquamon
 
         public void login()
         {
+            // Get actual path from the assembly, in case we add the app to Enviroment Variables.
+            var exePath =   Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+            Regex appPathMatcher = new Regex(@"(?<!fil)[A-Za-z]:\\+[\S\s]*?(?=\\+bin)");
+            var appRoot = appPathMatcher.Match(exePath).Value;
+
             var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
+                .SetBasePath(appRoot)
+                .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables();
 
             var Configuration = builder.Build();
 

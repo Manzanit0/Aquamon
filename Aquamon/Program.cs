@@ -24,7 +24,7 @@ namespace Aquamon
                 return 0;
             });
 
-            app.Command("create-sbx", (command) =>
+            app.Command("create", (command) =>
             {
                 command.Description = "Creates a sandbox.";
                 command.HelpOption("-?|-h|--help");
@@ -42,7 +42,7 @@ namespace Aquamon
                 });
             });
 
-            app.Command("refresh-sbx", (command) =>
+            app.Command("refresh", (command) =>
             {
                 command.Description = "Refreshes a sandbox.";
                 command.HelpOption("-?|-h|--help");
@@ -60,7 +60,7 @@ namespace Aquamon
                 });
             });
 
-            app.Command("get-sbx-status", (command) =>
+            app.Command("status", (command) =>
             {
                 command.Description = "Refreshes a sandbox.";
                 command.HelpOption("-?|-h|--help");
