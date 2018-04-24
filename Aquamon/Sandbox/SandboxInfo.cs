@@ -20,7 +20,7 @@ namespace Aquamon
         {
             return $@"
             {{
-                ""AutoActivate"": {AutoActivate},
+                ""AutoActivate"": {AutoActivate.ToString().ToLower()},
                 ""SandboxName"": ""{SandboxName}"",
                 ""Description"": ""{Description}"",
                 ""LicenseType"": ""{LicenseType}"",
