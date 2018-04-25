@@ -39,7 +39,7 @@ namespace Aquamon
             Console.WriteLine("\n:: Queried Sandbox :: " + stringResponse);
 
             dynamic queriedSandbox = JObject.Parse(stringResponse);
-            string id = queriedSandbox.records[0].Id;
+            string id = queriedSandbox.records[0].Id; // FIXME: Verify that the array is not empty.
 
             response = Client.Patch(SANDBOX_INFO_ENDPOINT + $"{id}/", info.ToJSON());
             stringResponse = response.Content.ReadAsStringAsync().Result;
