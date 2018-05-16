@@ -1,6 +1,6 @@
-namespace Aquamon
+namespace Aquamon.Commands
 {
-    public interface  ICommand
+    public interface ICommand
     {
         void Run();
     }

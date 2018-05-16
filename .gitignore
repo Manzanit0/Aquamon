@@ -1,4 +1,7 @@
 .vs
 .vscode
+.idea
 Aquamon/bin/
 Aquamon/obj/
+ToolingClient/bin/
+ToolingClient/obj/
