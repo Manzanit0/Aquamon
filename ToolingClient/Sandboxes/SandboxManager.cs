@@ -29,7 +29,7 @@ namespace ToolingClient.Sandboxes
             var response = Client.Post(SANDBOX_INFO_ENDPOINT, info.ToJSON());
             var stringResponse = response.Content.ReadAsStringAsync().Result;
 
-            Console.WriteLine("\n:: Sandbox created :: " + stringResponse);
+            Console.WriteLine("\n:: Sandbox created :: \n" + stringResponse);
         }
 
         public void RefreshSandbox(SandboxInfo info)
@@ -37,7 +37,7 @@ namespace ToolingClient.Sandboxes
             var response = Client.Get(QUERY_SANDBOX_INFO.Replace("{name}", info.SandboxName));
             var stringResponse = response.Content.ReadAsStringAsync().Result;
 
-            Console.WriteLine("\n:: Queried Sandbox :: " + stringResponse);
+            Console.WriteLine("\n:: Queried Sandbox :: \n" + stringResponse);
 
             dynamic queriedSandbox = JObject.Parse(stringResponse);
             string id = queriedSandbox.records[0].Id; // FIXME: Verify that the array is not empty.
@@ -45,7 +45,7 @@ namespace ToolingClient.Sandboxes
             response = Client.Patch(SANDBOX_INFO_ENDPOINT + $"{id}/", info.ToJSON());
             stringResponse = response.Content.ReadAsStringAsync().Result;
 
-            Console.WriteLine("\n:: Refreshed Sandbox :: " + stringResponse);
+            Console.WriteLine("\n:: Refreshed Sandbox :: \n" + stringResponse);
         }
 
         public string GetSandboxStatus(SandboxInfo info)

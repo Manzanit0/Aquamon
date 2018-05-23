@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Authentication;
 using System.Text;
 using Newtonsoft.Json.Linq;
 
@@ -28,6 +29,11 @@ namespace ToolingClient
             {
                 var message = client.PostAsync(new Uri("https://login.salesforce.com/services/oauth2/token"), content)
                     .Result;
+
+                if (!message.IsSuccessStatusCode)
+                {
+                    throw new AuthenticationException();
+                }
 
                 var responseString = message.Content.ReadAsStringAsync().Result;
 

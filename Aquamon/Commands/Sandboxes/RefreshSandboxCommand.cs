@@ -1,4 +1,5 @@
 using System;
+using System.Security.Authentication;
 using Microsoft.Extensions.CommandLineUtils;
 using ToolingClient.Sandboxes;
 
@@ -33,14 +34,23 @@ namespace Aquamon.Commands.Sandboxes
                     Description = descriptionOption.Value(),
                     ApexClassId = apexOption.Value()
                 };
-                new RefreshSandboxCommand(sbxInfo).Run();
+
+                try
+                {
+                    new RefreshSandboxCommand(sbxInfo).Run();
+                }
+                catch (AuthenticationException)
+                {
+                    Console.WriteLine(":: Login attempt unsuccessful - Please verify your credentials ::");
+                }
+                
                 return 0;
             });
         }
 
         public override void Run()
         {
-            Console.WriteLine($"\n:: Sandbox {SbxInfo.SandboxName} is going to refreshed ::");
+            Console.WriteLine("\n:: Starting to process request ::");
             SbxManager.RefreshSandbox(SbxInfo);
         }
     }

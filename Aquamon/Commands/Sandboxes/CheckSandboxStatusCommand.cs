@@ -1,4 +1,5 @@
 using System;
+using System.Security.Authentication;
 using Microsoft.Extensions.CommandLineUtils;
 using ToolingClient.Sandboxes;
 
@@ -28,7 +29,16 @@ namespace Aquamon.Commands.Sandboxes
                 var name = nameArgument.Value != null ? nameArgument.Value : "ApiSbx";
 
                 var sbxInfo = new SandboxInfo {SandboxName = name, Status = status, Description = "Description"};
-                new CheckSandboxStatusCommand(sbxInfo).Run();
+                
+                try
+                {
+                    new CheckSandboxStatusCommand(sbxInfo).Run();
+                }
+                catch (AuthenticationException)
+                {
+                    Console.WriteLine(":: Login attempt unsuccessful - Please verify your credentials ::");
+                }
+                
                 return 0;
             });
         }
