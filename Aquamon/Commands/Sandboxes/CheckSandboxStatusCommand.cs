@@ -17,19 +17,13 @@ namespace Aquamon.Commands.Sandboxes
             command.Description = "Checks the status of a sandbox.";
             command.HelpOption("-?|-h|--help");
 
-            var nameArgument = command.Argument("[name]", "The name of the sandbox");
             var statusArgument = command.Argument("[status]", "The status to check of the sandbox");
 
             command.OnExecute(() =>
             {
-                if (nameArgument.Value == null)
-                    throw new ArgumentNullException("A name for the sandbox must be specified.");
-
                 var status = statusArgument.Value != null ? statusArgument.Value : "Completed";
-                var name = nameArgument.Value != null ? nameArgument.Value : "ApiSbx";
 
-                var sbxInfo = CreateSandboxInfo();
-                sbxInfo.SandboxName = nameArgument.Value;
+                var sbxInfo = CreateSandboxInfo(command);
                 sbxInfo.Status = status;
                 
                 try

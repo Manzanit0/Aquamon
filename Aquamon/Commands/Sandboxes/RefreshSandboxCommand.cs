@@ -17,21 +17,9 @@ namespace Aquamon.Commands.Sandboxes
             command.Description = "Refreshes a sandbox.";
             command.HelpOption("-?|-h|--help");
 
-            var nameArgument = command.Argument("[name]", "The name of the sandbox");
-            var descriptionOption =
-                command.Option("-d|--description", "Sandbox description", CommandOptionType.SingleValue);
-            var apexOption = command.Option("-a|--apex", "Apex class to execute post-copy",
-                CommandOptionType.SingleValue);
-
             command.OnExecute(() =>
             {
-                if (nameArgument.Value == null)
-                    throw new ArgumentNullException("A name for the sandbox must be specified.");
-
-                var sbxInfo = CreateSandboxInfo();
-                sbxInfo.SandboxName = nameArgument.Value;
-                sbxInfo.Description = descriptionOption.Value();
-                sbxInfo.ApexClassId = apexOption.Value() ?? sbxInfo.ApexClassId; // Override if forced via console parameter.
+                var sbxInfo = CreateSandboxInfo(command);
 
                 try
                 {
