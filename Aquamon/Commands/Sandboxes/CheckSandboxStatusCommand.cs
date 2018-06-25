@@ -28,7 +28,9 @@ namespace Aquamon.Commands.Sandboxes
                 var status = statusArgument.Value != null ? statusArgument.Value : "Completed";
                 var name = nameArgument.Value != null ? nameArgument.Value : "ApiSbx";
 
-                var sbxInfo = new SandboxInfo {SandboxName = name, Status = status, Description = "Description"};
+                var sbxInfo = CreateSandboxInfo();
+                sbxInfo.SandboxName = nameArgument.Value;
+                sbxInfo.Status = status;
                 
                 try
                 {

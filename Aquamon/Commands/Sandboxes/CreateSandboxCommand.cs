@@ -27,13 +27,11 @@ namespace Aquamon.Commands.Sandboxes
             {
                 if (nameArgument.Value == null)
                     throw new ArgumentNullException("A name for the sandbox must be specified.");
-
-                var sbxInfo = new SandboxInfo
-                {
-                    SandboxName = nameArgument.Value,
-                    Description = descriptionOption.Value(),
-                    ApexClassId = apexOption.Value()
-                };
+                
+                var sbxInfo = CreateSandboxInfo();
+                sbxInfo.SandboxName = nameArgument.Value;
+                sbxInfo.Description = descriptionOption.Value();
+                sbxInfo.ApexClassId = apexOption.Value() ?? sbxInfo.ApexClassId; // Override if forced via console parameter.
                 
                 try
                 {

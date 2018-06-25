@@ -2,8 +2,7 @@
 {
     public class SalesforceConfiguration
     {
-        public LoginConfiguration Credentials { get; set; }
-        public bool AutoActivateSandboxes { get; set; }
-        public string ApexClassId { get; set; }
+        public LoginConfiguration LoginInfo { get; set; }
+        public SandboxConfiguration SandboxInfo { get; set; }
     }
 }
