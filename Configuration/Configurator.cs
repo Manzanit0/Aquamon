@@ -14,11 +14,7 @@ namespace Configuration
         {
             // Get actual path from the assembly, in case we add the app to Enviroment Variables.
             var exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
-            
-            // TODO - Make this regex OS friendly.
-            //var appPathMatcher = new Regex(@"(?<!fil)[A-Za-z]:\\+[\S\s]*"); // Windows
-            var appPathMatcher = new Regex(@"(?<!file\/)\/+[\S\s]*"); // MacOs 
-            
+            var appPathMatcher = new Regex(@"(?<=file:\\?)[^\\].+");
             var appRoot = appPathMatcher.Match(exePath).Value;
 
             var builder = new ConfigurationBuilder()
