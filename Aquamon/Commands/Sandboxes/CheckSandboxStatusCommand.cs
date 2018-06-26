@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Security.Authentication;
 using Microsoft.Extensions.CommandLineUtils;
 using ToolingClient.Sandboxes;
@@ -15,16 +16,13 @@ namespace Aquamon.Commands.Sandboxes
         public static void Configure(CommandLineApplication command)
         {
             command.Description = "Checks the status of a sandbox.";
-            command.HelpOption("-?|-h|--help");
-
-            var statusArgument = command.Argument("[status]", "The status to check of the sandbox");
+            command.Argument("[status]", "The status to check of the sandbox");
+            ConfigureOptions(command);
 
             command.OnExecute(() =>
             {
-                var status = statusArgument.Value != null ? statusArgument.Value : "Completed";
-
                 var sbxInfo = CreateSandboxInfo(command);
-                sbxInfo.Status = status;
+                sbxInfo.Status = command.Arguments.Where(x => x.Name == "[status]").FirstOrDefault().Value ?? "Completed";
                 
                 try
                 {

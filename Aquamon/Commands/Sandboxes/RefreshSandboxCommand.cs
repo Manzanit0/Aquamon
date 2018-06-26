@@ -15,7 +15,7 @@ namespace Aquamon.Commands.Sandboxes
         public static void Configure(CommandLineApplication command)
         {
             command.Description = "Refreshes a sandbox.";
-            command.HelpOption("-?|-h|--help");
+            ConfigureOptions(command);
 
             command.OnExecute(() =>
             {

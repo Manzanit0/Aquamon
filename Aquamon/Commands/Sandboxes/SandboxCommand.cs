@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using AutoMapper;
 using Configuration;
 using Configuration.Configurations;
@@ -30,6 +31,14 @@ namespace Aquamon.Commands.Sandboxes
         
         public abstract void Run();
 
+        protected static void ConfigureOptions(CommandLineApplication command)
+        {
+            command.HelpOption("-?|-h|--help");
+            command.Argument("[name]", "The name of the sandbox");
+            command.Option("-d|--description", "Sandbox description", CommandOptionType.SingleValue);
+            command.Option("-a|--apex", "Apex class to execute post-copy", CommandOptionType.SingleValue);
+        }
+        
         protected static SandboxInfo CreateSandboxInfo()
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<SandboxConfiguration, SandboxInfo>());
@@ -43,19 +52,15 @@ namespace Aquamon.Commands.Sandboxes
         protected static SandboxInfo CreateSandboxInfo(CommandLineApplication command)
         {
             var sbxInfo = CreateSandboxInfo();
-            
-            var nameArgument = command.Argument("[name]", "The name of the sandbox");
-            var descriptionOption =
-                command.Option("-d|--description", "Sandbox description", CommandOptionType.SingleValue);
-            var apexOption = 
-                command.Option("-a|--apex", "Apex class to execute post-copy", CommandOptionType.SingleValue);
 
-            if (nameArgument.Value == null)
-                throw new ArgumentNullException("A name for the sandbox must be specified.");
+            var name = command.Arguments.Where(x => x.Name == "[name]").FirstOrDefault().Value;
             
-            sbxInfo.SandboxName = nameArgument.Value;
-            sbxInfo.Description = descriptionOption.Value() ?? "Default Description.";
-            sbxInfo.ApexClassId = apexOption.Value() ?? sbxInfo.ApexClassId; // Override if forced via console parameter.
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("A name for the sandbox must be specified.");
+
+            sbxInfo.SandboxName = name;
+            sbxInfo.Description = command.Options.Where(x => x.ShortName == "d").FirstOrDefault().ValueName ?? "Default Description.";
+            sbxInfo.ApexClassId = command.Options.Where(x => x.ShortName == "a").FirstOrDefault().ValueName ?? sbxInfo.ApexClassId; // Override if forced via console parameter.
             
             return sbxInfo;
         }
