@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Security.Authentication;
 using Microsoft.Extensions.CommandLineUtils;
 using ToolingClient.Sandboxes;
@@ -15,30 +16,27 @@ namespace Aquamon.Commands.Sandboxes
         public static void Configure(CommandLineApplication command)
         {
             command.Description = "Checks the status of a sandbox.";
-            command.HelpOption("-?|-h|--help");
-
-            var nameArgument = command.Argument("[name]", "The name of the sandbox");
-            var statusArgument = command.Argument("[status]", "The status to check of the sandbox");
+            ConfigureOptions(command);
+            command.Argument("[status]", "The status to check of the sandbox");
 
             command.OnExecute(() =>
             {
-                if (nameArgument.Value == null)
-                    throw new ArgumentNullException("A name for the sandbox must be specified.");
-
-                var status = statusArgument.Value != null ? statusArgument.Value : "Completed";
-                var name = nameArgument.Value != null ? nameArgument.Value : "ApiSbx";
-
-                var sbxInfo = new SandboxInfo {SandboxName = name, Status = status, Description = "Description"};
-                
                 try
                 {
+                    var sbxInfo = CreateSandboxInfo(command);
+                    sbxInfo.Status = command.Arguments.Where(x => x.Name == "[status]").FirstOrDefault().Value ??
+                                     "Completed";
                     new CheckSandboxStatusCommand(sbxInfo).Run();
                 }
                 catch (AuthenticationException)
                 {
                     Console.WriteLine(":: Login attempt unsuccessful - Please verify your credentials ::");
                 }
-                
+                catch (Exception e)
+                {
+                    Console.WriteLine($":: {e.Message} ::");
+                }
+
                 return 0;
             });
         }

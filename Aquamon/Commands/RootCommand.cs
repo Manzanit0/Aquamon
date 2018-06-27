@@ -1,3 +1,4 @@
+using Aquamon.Commands.Configuration;
 using Aquamon.Commands.Sandboxes;
 using Microsoft.Extensions.CommandLineUtils;
 
@@ -26,6 +27,7 @@ namespace Aquamon.Commands
             app.Command("create", CreateSandboxCommand.Configure);
             app.Command("refresh", RefreshSandboxCommand.Configure);
             app.Command("status", CheckSandboxStatusCommand.Configure);
+            app.Command("config", ConfigCommand.Configure);
 
             app.OnExecute(() =>
             {
