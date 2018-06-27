@@ -20,11 +20,12 @@ namespace Aquamon.Commands.Sandboxes
             command.Argument("[status]", "The status to check of the sandbox");
 
             command.OnExecute(() =>
-            {             
+            {
                 try
                 {
                     var sbxInfo = CreateSandboxInfo(command);
-                    sbxInfo.Status = command.Arguments.Where(x => x.Name == "[status]").FirstOrDefault().Value ?? "Completed";
+                    sbxInfo.Status = command.Arguments.Where(x => x.Name == "[status]").FirstOrDefault().Value ??
+                                     "Completed";
                     new CheckSandboxStatusCommand(sbxInfo).Run();
                 }
                 catch (AuthenticationException)
@@ -35,7 +36,7 @@ namespace Aquamon.Commands.Sandboxes
                 {
                     Console.WriteLine($":: {e.Message} ::");
                 }
-                
+
                 return 0;
             });
         }

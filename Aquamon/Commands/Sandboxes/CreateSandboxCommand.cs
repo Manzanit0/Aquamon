@@ -32,7 +32,7 @@ namespace Aquamon.Commands.Sandboxes
                 {
                     Console.WriteLine($":: {e.Message} ::");
                 }
-                
+
                 return 0;
             });
         }
