@@ -56,7 +56,7 @@ namespace Aquamon.Commands.Sandboxes
             var name = command.Arguments.Where(x => x.Name == "[name]").FirstOrDefault().Value;
             
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("A name for the sandbox must be specified.");
+                throw new Exception("A name for the sandbox must be specified.");
 
             sbxInfo.SandboxName = name;
             sbxInfo.Description = command.Options.Where(x => x.ShortName == "d").FirstOrDefault().ValueName ?? "Default Description.";

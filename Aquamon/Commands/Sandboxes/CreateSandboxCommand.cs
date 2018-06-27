@@ -19,15 +19,18 @@ namespace Aquamon.Commands.Sandboxes
 
             command.OnExecute(() =>
             {
-                var sbxInfo = CreateSandboxInfo(command);
-                
                 try
                 {
+                    var sbxInfo = CreateSandboxInfo(command);
                     new CreateSandboxCommand(sbxInfo).Run();
                 }
                 catch (AuthenticationException)
                 {
                     Console.WriteLine(":: Login attempt unsuccessful - Please verify your credentials ::");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($":: {e.Message} ::");
                 }
                 
                 return 0;

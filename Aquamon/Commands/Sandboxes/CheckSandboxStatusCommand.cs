@@ -16,21 +16,24 @@ namespace Aquamon.Commands.Sandboxes
         public static void Configure(CommandLineApplication command)
         {
             command.Description = "Checks the status of a sandbox.";
-            command.Argument("[status]", "The status to check of the sandbox");
             ConfigureOptions(command);
+            command.Argument("[status]", "The status to check of the sandbox");
 
             command.OnExecute(() =>
-            {
-                var sbxInfo = CreateSandboxInfo(command);
-                sbxInfo.Status = command.Arguments.Where(x => x.Name == "[status]").FirstOrDefault().Value ?? "Completed";
-                
+            {             
                 try
                 {
+                    var sbxInfo = CreateSandboxInfo(command);
+                    sbxInfo.Status = command.Arguments.Where(x => x.Name == "[status]").FirstOrDefault().Value ?? "Completed";
                     new CheckSandboxStatusCommand(sbxInfo).Run();
                 }
                 catch (AuthenticationException)
                 {
                     Console.WriteLine(":: Login attempt unsuccessful - Please verify your credentials ::");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($":: {e.Message} ::");
                 }
                 
                 return 0;
