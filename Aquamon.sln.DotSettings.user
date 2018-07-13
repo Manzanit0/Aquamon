@@ -6,4 +6,6 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=A12CA0F6_002D6C40_002D48A1_002D95C8_002D1A9C9E260ADA_002Fd_003ACommands_002Fd_003ASandboxes_002Ff_003ASandboxCommand_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=A12CA0F6_002D6C40_002D48A1_002D95C8_002D1A9C9E260ADA_002Ff_003AConfigManager_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=14F99D0D_002D4756_002D40EB_002D8E29_002DE7A6A7B4A1B9_002Ff_003AConfigurator_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
-	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=A12CA0F6_002D6C40_002D48A1_002D95C8_002D1A9C9E260ADA_002Ff_003AProgram_002Ecs/@EntryIndexedValue">ForceIncluded</s:String></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=A12CA0F6_002D6C40_002D48A1_002D95C8_002D1A9C9E260ADA_002Ff_003AProgram_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/Environment/Hierarchy/Build/BuildTool/CustomBuildToolPath/@EntryValue">C:\Program Files\dotnet\sdk\2.1.201\MSBuild.dll</s:String>
+	<s:Int64 x:Key="/Default/Environment/Hierarchy/Build/BuildTool/MsbuildVersion/@EntryValue">4294967293</s:Int64></wpf:ResourceDictionary>
